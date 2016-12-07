@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+
+        android:gravity="center"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/diamond"
+            android:id="@+id/coin_front_view"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/diamond"
+            android:id="@+id/coin_back_view"/>
+
+    </LinearLayout>
+    <android.support.v7.widget.GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="3"
+        app:columnCount="2">
+        <TextView
+            app:layout_rowWeight="1"
+            android:text="@string/coin_type_label"/>
+        <TextView
+            app:layout_columnWeight="3"
+            android:gravity="left"
+            android:id="@+id/coin_type_detail"/>
+
+        <TextView
+            app:layout_rowWeight="1"
+            android:text="@string/coin_year_label"/>
+        <TextView
+            app:layout_columnWeight="3"
+            android:gravity="left"
+            android:id="@+id/coin_year_detail"/>
+
+
+        <TextView
+            app:layout_rowWeight="1"
+            android:text="@string/coin_mint_label"/>
+        <TextView
+            app:layout_columnWeight="3"
+            android:gravity="left"
+            android:id="@+id/coin_mint_detail"/>
+
+
+        <TextView
+            app:layout_rowWeight="1"
+            android:text="@string/coin_country_label"/>
+        <TextView
+            app:layout_columnWeight="3"
+            android:gravity="left"
+            android:id="@+id/coin_country_detail"/>
+
+
+        <TextView
+            app:layout_rowWeight="1"
+            android:text="@string/coin_usState_label"/>
+        <TextView
+            app:layout_columnWeight="3"
+            android:gravity="left"
+            android:id="@+id/coin_usState_detail"/>
+
+
+        <TextView
+            app:layout_rowWeight="1"
+            android:text="@string/coin_comment_label"/>
+        <TextView
+            app:layout_columnWeight="3"
+            android:gravity="left"
+            android:id="@+id/coin_comment_detail"/>
+    </android.support.v7.widget.GridLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="10dp"
+        android:text="@string/edit_btn"/>
+
+</LinearLayout>

@@ -1,0 +1,21 @@
+<resources>
+
+    <string name="app_name">MyCoins</string>
+
+    <string name="search_btn">Find Coins</string>
+    <string name="add_btn"> Add </string>
+    <string name="update_btn"> Save </string>
+    <string name="edit_btn"> Edit </string>
+    <string name="delete_btn"> Delete Coin</string>
+
+    <string name="text_empty_list"> No coins found :(</string>
+
+    <string name="coin_type_label"> Class: </string>
+    <string name="coin_year_label"> Year: </string>
+    <string name="coin_mint_label"> Mint: </string>
+    <string name="coin_country_label"> Origin: </string>
+    <string name="coin_usState_label"> Artifact: </string>
+    <string name="coin_comment_label"> Notes: </string>
+
+    <string name="menu_add_coin">Add</string>
+</resources>
