@@ -2,8 +2,10 @@ package com.personal.mycoins;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.personal.mycoins.database.CoinDBHelper;
 import com.personal.mycoins.database.CoinSchema;
 
 import org.junit.After;
@@ -25,7 +27,11 @@ import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowCursorWrapper;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
 /**
  * Author: Ben Matson
@@ -50,6 +56,7 @@ public class CoinListUnitTest {
     @Before
     public void setup(){
         ShadowApplication app = Shadows.shadowOf(RuntimeEnvironment.application);
+        CoinDBHelper db = new CoinDBHelper(app.getApplicationContext());
         coinList = new Coin(app.getApplicationContext());
         newCoin = new ContentValues();
         newCoin.put(CoinSchema.coins._ID, 1);
@@ -59,6 +66,13 @@ public class CoinListUnitTest {
         newCoin.put(CoinSchema.coins.COL_COUNTRY, "United States");
         newCoin.put(CoinSchema.coins.COL_TYPEID, 1);
         coinList.addCoin(newCoin);
+
+        SQLiteDatabase helper = db.getWritableDatabase();
+        ContentValues type = new ContentValues();
+        type.put("title", "Quarter");
+        type.put("title", "Nickel");
+
+        helper.insert(CoinSchema.coinTypes.TABLE_NAME, null, type);
 
     }
 
@@ -123,6 +137,17 @@ public class CoinListUnitTest {
 
         coin.moveToFirst();
         assertThat(coin.getString(coin.getColumnIndex(CoinSchema.coins.COL_COUNTRY)), is(newCoin.getAsString(CoinSchema.coins.COL_COUNTRY)));
+    }
+
+    // Test the coin types return a list of titles and their values
+    @Test
+    public void should_return_list_of_coin_types(){
+        Cursor titles = coinList.getCoinTypes();
+
+        assertNotNull("Nullable Object", titles);
+        assertThat(titles.getColumnName(1), is(CoinSchema.coinTypes.COL_TITLE));
+        assertThat(titles.getColumnName(2), is(CoinSchema.coinTypes.COL_VALUE));
+        assertThat(titles.getCount(), is(not(0)));
     }
 
 

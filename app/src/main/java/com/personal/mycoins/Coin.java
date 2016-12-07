@@ -73,6 +73,11 @@ public class Coin {
                 CoinSchema.coins.COL_TYPEID+"="+CoinSchema.coinTypes.TABLE_NAME+"."+CoinSchema.coinTypes._ID, null);
     }
 
+    // Method that will return a list of coin titles
+    public Cursor getCoinTypes(){
+        return db.rawQuery("SELECT * FROM "+CoinSchema.coinTypes.TABLE_NAME, null);
+    }
+
     /** UPDATE methods go here **/
     public boolean updateCoin(int id){
         return false;

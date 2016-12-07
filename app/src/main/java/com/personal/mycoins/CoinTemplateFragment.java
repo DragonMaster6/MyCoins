@@ -1,12 +1,19 @@
 package com.personal.mycoins;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.personal.mycoins.database.CoinSchema;
@@ -55,8 +62,14 @@ public class CoinTemplateFragment extends Fragment {
         // unpack the arguments
         Bundle args = getArguments();
         Coin collection = new Coin(getContext());
-        mEntry = collection.getCoin(args.getInt("id"));
+
+        // Check the id argument if there is a coin to fetch
+        if(args.getInt("id") != -1) {
+            mEntry = collection.getCoin(args.getInt("id"));
             mEntry.moveToFirst();
+        }else
+            mEntry = null;
+
         mState = args.getInt("state");
     }
 
@@ -69,15 +82,66 @@ public class CoinTemplateFragment extends Fragment {
         TextView countryField = (TextView) v.findViewById(R.id.coin_country_detail);
         TextView stateField = (TextView) v.findViewById(R.id.coin_usState_detail);
         TextView commentField = (TextView) v.findViewById(R.id.coin_comment_detail);
+        Button actionButton = (Button) v.findViewById(R.id.coin_action_btn);
 
+        // Based on the state the fragment is in, display the appropriate template
         switch(mState){
             case 1:
                 // This is the write state. Replace the detail portions with EditViews for editing
+                Spinner typeEdit = (Spinner) v.findViewById(R.id.coin_type_edit);
+                EditText yearEdit = (EditText) v.findViewById(R.id.coin_year_edit);
+                RadioGroup mintEdit = (RadioGroup) v.findViewById(R.id.coin_mint_edit);
+                EditText countryEdit = (EditText) v.findViewById(R.id.coin_country_edit);
+                EditText stateEdit = (EditText) v.findViewById(R.id.coin_usState_edit);
+                AutoCompleteTextView commentEdit = (AutoCompleteTextView) v.findViewById(R.id.coin_comment_edit);
+                actionButton.setText(mEntry==null?getString(R.string.add_btn):getString(R.string.edit_btn));
+
+                // swap the textview with the edit view and fill in any details if necessary
+                typeField.setVisibility(View.GONE);
+                typeEdit.setVisibility(View.VISIBLE);
+                    Coin helper = new Coin(getContext());
+                    CursorAdapter dataAdapter = new CursorAdapter(getContext(), helper.getCoinTypes(), 0) {
+                        @Override
+                        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+                            return LayoutInflater.from(context).inflate(R.layout.viewholder_cointype, parent, false);
+                        }
+
+                        @Override
+                        public void bindView(View view, Context context, Cursor cursor) {
+                            TextView item = (TextView) view.findViewById(R.id.coin_type_view);
+                            item.setText(cursor.getString(cursor.getColumnIndex(CoinSchema.coinTypes.COL_TITLE)));
+                        }
+                    };
+                    typeEdit.setAdapter(dataAdapter);
+
+                yearField.setVisibility(View.GONE);
+                yearEdit.setVisibility(View.VISIBLE);
+
+                mintField.setVisibility(View.GONE);
+                mintEdit.setVisibility(View.VISIBLE);
+
+                countryField.setVisibility(View.GONE);
+                countryEdit.setVisibility(View.VISIBLE);
+
+                stateField.setVisibility(View.GONE);
+                stateEdit.setVisibility(View.VISIBLE);
+
+                commentField.setVisibility(View.GONE);
+                commentEdit.setVisibility(View.VISIBLE);
+
+
+
                 break;
             case 2:
                 // This is the read state. Just update the detail section with proper information
                 typeField.setText(mEntry.getString(mEntry.getColumnIndex(CoinSchema.coinTypes.COL_TITLE)));
                 yearField.setText(""+mEntry.getInt(mEntry.getColumnIndex(CoinSchema.coins.COL_YEAR)));
+                String mint = mEntry.getString(mEntry.getColumnIndex(CoinSchema.coins.COL_MINT));
+                mintField.setText(mint.equals("d")?getString(R.string.mint_d):getString(R.string.mint_p));
+                countryField.setText(mEntry.getString(mEntry.getColumnIndex(CoinSchema.coins.COL_COUNTRY)));
+                stateField.setText(mEntry.getString(mEntry.getColumnIndex(CoinSchema.coins.COL_US_STATE)));
+                commentField.setText(mEntry.getString(mEntry.getColumnIndex(CoinSchema.coins.COL_COMMENT)));
+                actionButton.setVisibility(View.GONE);
                 break;
         }
 

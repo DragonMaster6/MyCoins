@@ -17,5 +17,10 @@
     <string name="coin_usState_label"> Artifact: </string>
     <string name="coin_comment_label"> Notes: </string>
 
+    <string name="mint_d"> Denver </string>
+    <string name="mint_p"> Pennsylvania </string>
+
+    <string name="coin_type_edit"> coin type </string>
+
     <string name="menu_add_coin">Add</string>
 </resources>

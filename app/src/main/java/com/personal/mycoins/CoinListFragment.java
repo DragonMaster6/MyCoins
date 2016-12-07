@@ -94,7 +94,10 @@ public class CoinListFragment extends Fragment{
             case R.id.menu_add_coin:
                 // The user wants to add a new coin to the database.
                 // Create a new fragment and display it to the screen
-                Toast.makeText(getContext(), "Adding coin", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "Adding coin", Toast.LENGTH_LONG).show();
+                FragmentManager fm = getFragmentManager();
+                CoinTemplateFragment frag = CoinTemplateFragment.getInstance(-1, CoinTemplateFragment.TEMPLATE_WRITE);
+                fm.beginTransaction().replace(R.id.coin_display, frag).addToBackStack(null).commit();
                 break;
         }
 

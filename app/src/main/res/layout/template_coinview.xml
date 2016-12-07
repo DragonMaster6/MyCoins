@@ -24,69 +24,195 @@
             android:id="@+id/coin_back_view"/>
 
     </LinearLayout>
-    <android.support.v7.widget.GridLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_weight="3"
-        app:columnCount="2">
+        android:layout_weight="1">
         <TextView
-            app:layout_rowWeight="1"
-            android:text="@string/coin_type_label"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/coin_type_label"
+            android:id="@+id/coin_type_label"/>
         <TextView
-            app:layout_columnWeight="3"
-            android:gravity="left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/coin_type_label"
+            android:visibility="visible"
             android:id="@+id/coin_type_detail"/>
 
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/coin_type_label"
+            android:layout_toEndOf="@+id/coin_type_label"
+            android:layout_marginLeft="10dp"
+            android:visibility="gone"
+            android:id="@+id/coin_type_edit" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
         <TextView
-            app:layout_rowWeight="1"
-            android:text="@string/coin_year_label"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/coin_year_label"
+            android:id="@+id/coin_year_label"/>
         <TextView
-            app:layout_columnWeight="3"
-            android:gravity="left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/coin_year_label"
+            android:visibility="visible"
             android:id="@+id/coin_year_detail"/>
-
-
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/coin_year_label"
+            android:inputType="number"
+            android:visibility="gone"
+            android:id="@+id/coin_year_edit"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
         <TextView
-            app:layout_rowWeight="1"
-            android:text="@string/coin_mint_label"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/coin_mint_label"
+            android:id="@+id/coin_mint_label"/>
         <TextView
-            app:layout_columnWeight="3"
-            android:gravity="left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/coin_mint_label"
+            android:visibility="visible"
             android:id="@+id/coin_mint_detail"/>
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/coin_mint_label"
+            android:layout_toEndOf="@id/coin_mint_label"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:id="@+id/coin_mint_edit">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mint_d"
+                android:checked="true"
+                android:id="@+id/radio_mint_denver"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mint_p"
+                android:id="@+id/radio_mint_penn"/>
+        </RadioGroup>
 
-
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
         <TextView
-            app:layout_rowWeight="1"
-            android:text="@string/coin_country_label"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/coin_country_label"
+            android:id="@+id/coin_country_label"/>
         <TextView
-            app:layout_columnWeight="3"
-            android:gravity="left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/coin_country_label"
+            android:visibility="visible"
             android:id="@+id/coin_country_detail"/>
-
-
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/coin_country_label"
+            android:visibility="gone"
+            android:id="@+id/coin_country_edit"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
         <TextView
-            app:layout_rowWeight="1"
-            android:text="@string/coin_usState_label"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/coin_usState_label"
+            android:id="@+id/coin_usState_label"/>
         <TextView
-            app:layout_columnWeight="3"
-            android:gravity="left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/coin_usState_label"
+            android:visibility="visible"
             android:id="@+id/coin_usState_detail"/>
-
-
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/coin_usState_label"
+            android:visibility="gone"
+            android:id="@+id/coin_usState_edit"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2">
         <TextView
-            app:layout_rowWeight="1"
-            android:text="@string/coin_comment_label"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/coin_comment_label"
+            android:id="@+id/coin_comment_label"/>
         <TextView
-            app:layout_columnWeight="3"
-            android:gravity="left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/coin_comment_label"
+            android:visibility="visible"
             android:id="@+id/coin_comment_detail"/>
-    </android.support.v7.widget.GridLayout>
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/coin_comment_label"
+            android:layout_toEndOf="@id/coin_comment_label"
+            android:visibility="gone"
+            android:id="@+id/coin_comment_edit"/>
+
+
+    </RelativeLayout>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginRight="10dp"
-        android:text="@string/edit_btn"/>
+        android:text="@string/edit_btn"
+        android:id="@+id/coin_action_btn"/>
 
 </LinearLayout>
