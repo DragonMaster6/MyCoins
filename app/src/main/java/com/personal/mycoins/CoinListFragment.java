@@ -1,6 +1,7 @@
 package com.personal.mycoins;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Canvas;
@@ -9,7 +10,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,12 +28,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.personal.mycoins.database.CoinDBHelper;
 import com.personal.mycoins.database.CoinSchema;
 
 /**
  * Author: Ben Matson
  * Date Created: 11/17/16
- * Last Edited: 12/2/16
+ * Last Edited: 12/7/16
  * Purpose: This will display to the user their coins sorted by year
  */
 
@@ -38,17 +43,16 @@ public class CoinListFragment extends Fragment{
 
     public static final int RESULT_OK = 1;
 
-    private CoinListAdapter mCoinList;
     private Coin collection;
     private CoinListAdapter coinAdapter;
+    private boolean mCoinUpdate;
 
     @Override
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         // Creation of the Fragment
         // Unpack any arguments here
-        collection = new Coin(getContext());
-        coinAdapter = new CoinListAdapter(collection);      // default display of coins
+        Log.d("FRAGMENT","STARTING UP");
 
         // setup the menu display
         setHasOptionsMenu(true);
@@ -60,8 +64,12 @@ public class CoinListFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance){
         View v = inflater.inflate(R.layout.fragment_coinlist, container, false);
 
-        // get a list of coins to display to the RecyclerView
+        // get a list of coins from the database so that it refreshes the display
         RecyclerView coinList = (RecyclerView) v.findViewById(R.id.list_of_coins);
+        collection = new Coin(getContext());
+        coinAdapter = new CoinListAdapter(collection);      // default display of coins
+
+        // set the collection adapter to the view
         coinList.setAdapter(coinAdapter);
         coinList.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -79,7 +87,6 @@ public class CoinListFragment extends Fragment{
 
         return v;
     }
-
 
     /** This will handle the menu display and actions **/
     @Override
@@ -125,6 +132,9 @@ public class CoinListFragment extends Fragment{
             int id = coins.getInt(coins.getColumnIndexOrThrow(CoinSchema.coins._ID));
             vh.tempText.setText("Coin "+coins.getInt(coins.getColumnIndexOrThrow("coins_id")));
 
+            /** TODO: If there is no image to work with set a textview ontop of the default image to
+             *        display the coin's type and year for easy reading
+             */
             // Setup a click listener to go to the detail fragment
             vh.container.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -208,6 +218,21 @@ public class CoinListFragment extends Fragment{
                 mDivide.setBounds(dividerLeft, dividerTop, dividerRight, dividerBottom);
                 mDivide.draw(c);
             }
+        }
+    }
+
+    /** A Loader that will help synchronise any new new coins added to the database **/
+    public static class CoinLoader extends CursorLoader{
+        private Coin mCollection;
+        public CoinLoader(Context context){
+            super(context);
+            mCollection = new Coin(context);
+        }
+
+        // The method that gets coins from the background
+        @Override
+        public Cursor loadInBackground(){
+            return mCollection.getCoins();
         }
     }
 }

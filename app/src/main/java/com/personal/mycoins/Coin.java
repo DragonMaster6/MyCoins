@@ -12,7 +12,7 @@ import com.personal.mycoins.database.CoinSchema;
 /**
  * Author: Ben Matson
  * Date Created: 11/21/16
- * Last Edited: 11/28/16
+ * Last Edited: 12/7/16
  * Purpose: This file is the model class for the individual coins that will be added to the
  *          database. Including CRUD methods to update/add various coins in a user's collection
  */
@@ -84,6 +84,7 @@ public class Coin {
     }
 
     /** DELETE methods go here **/
+    /** TODO: Implement the deletion function **/
     public boolean deleteCoin(int id){
         return false;
     }
