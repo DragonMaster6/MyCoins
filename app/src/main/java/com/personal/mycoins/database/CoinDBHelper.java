@@ -16,6 +16,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 
 public class CoinDBHelper extends SQLiteOpenHelper{
+    private static CoinDBHelper sInstance;
     // The following constants will help setup the tables as defined in the schema
     private static final String CREATE_COINS_TABLE = "CREATE TABLE "+
             CoinSchema.coins.TABLE_NAME+" ("+
@@ -42,7 +43,14 @@ public class CoinDBHelper extends SQLiteOpenHelper{
     private static int VERSION = 2;
     private static String NAME = "CoinDB.db";
 
-    public CoinDBHelper(Context context){
+    public static CoinDBHelper getInstance(Context context){
+        if(sInstance == null){
+            sInstance = new CoinDBHelper(context);
+        }
+
+        return sInstance;
+    }
+    private CoinDBHelper(Context context){
         super(context,NAME, null, VERSION);
     }
 

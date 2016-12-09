@@ -23,7 +23,7 @@ public class Coin {
 
     public Coin(Context context){
         // Initialize anything here
-        dbHelper = new CoinDBHelper(context);
+        dbHelper = CoinDBHelper.getInstance(context);
         db = dbHelper.getWritableDatabase();
     }
 
@@ -68,7 +68,7 @@ public class Coin {
 
     // Method that gets an individual coin
     public Cursor getCoin(int id){
-        return db.rawQuery("SELECT "+CoinSchema.coins.TABLE_NAME+"."+CoinSchema.coins._ID+" AS coins_ID, * FROM "+CoinSchema.coins.TABLE_NAME+","+CoinSchema.coinTypes.TABLE_NAME+" WHERE "+
+        return db.rawQuery("SELECT "+CoinSchema.coins.TABLE_NAME+"."+CoinSchema.coins._ID+" AS "+CoinSchema.coins.TABLE_NAME+CoinSchema.coins._ID+", * FROM "+CoinSchema.coins.TABLE_NAME+","+CoinSchema.coinTypes.TABLE_NAME+" WHERE "+
             CoinSchema.coins.TABLE_NAME+"."+CoinSchema.coins._ID+"="+id+" AND "+
                 CoinSchema.coins.COL_TYPEID+"="+CoinSchema.coinTypes.TABLE_NAME+"."+CoinSchema.coinTypes._ID, null);
     }
@@ -79,13 +79,21 @@ public class Coin {
     }
 
     /** UPDATE methods go here **/
-    public boolean updateCoin(int id){
-        return false;
+    public boolean updateCoin(ContentValues coin, int id){
+        boolean result  = db.update(CoinSchema.coins.TABLE_NAME,coin,CoinSchema.coins._ID+"="+id, null) > 0;
+/*        Cursor test = db.rawQuery("UPDATE "+CoinSchema.coins.TABLE_NAME+" SET "+
+            CoinSchema.coins.COL_TYPEID+"="+coin.get(CoinSchema.coins.COL_TYPEID)+","+
+            CoinSchema.coins.COL_YEAR+"="+coin.get(CoinSchema.coins.COL_YEAR)+","+
+            CoinSchema.coins.COL_MINT+"=\""+coin.get(CoinSchema.coins.COL_MINT)+"\" WHERE "+CoinSchema.coins._ID+"="+id, null);
+        test.close();
+*/
+        return result;
     }
 
     /** DELETE methods go here **/
     /** TODO: Implement the deletion function **/
     public boolean deleteCoin(int id){
-        return false;
+        int result = db.delete(CoinSchema.coins.TABLE_NAME, CoinSchema.coins._ID+"="+id, null);
+        return (result > 0);
     }
 }

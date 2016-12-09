@@ -31,6 +31,8 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
@@ -56,7 +58,7 @@ public class CoinListUnitTest {
     @Before
     public void setup(){
         ShadowApplication app = Shadows.shadowOf(RuntimeEnvironment.application);
-        CoinDBHelper db = new CoinDBHelper(app.getApplicationContext());
+        CoinDBHelper db = CoinDBHelper.getInstance(app.getApplicationContext());
         coinList = new Coin(app.getApplicationContext());
         newCoin = new ContentValues();
         newCoin.put(CoinSchema.coins._ID, 1);
@@ -151,9 +153,35 @@ public class CoinListUnitTest {
     }
 
 
-    // UPDATE tests
+    /** UPDATE tests **/
+    // Test that a coin can be updated
+    @Test
+    public void should_be_able_to_update_a_single_coin(){
+        ContentValues newCoin = new ContentValues();
+        String newCountry = "United Kingdom";
+        Cursor oldCoin = coinList.getCoin(0);
+        oldCoin.moveToFirst();
+        String oldCountry = oldCoin.getString(oldCoin.getColumnIndex(CoinSchema.coins.COL_COUNTRY));
+
+        newCoin.put(CoinSchema.coins.COL_COUNTRY, newCountry);
+
+        boolean result = coinList.updateCoin(newCoin);
+        Cursor updatedCoin = coinList.getCoin(0);
+        updatedCoin.moveToFirst();
+
+        assertTrue(result);
+        assertThat(updatedCoin.getString(updatedCoin.getColumnIndex(CoinSchema.coins.COL_COUNTRY)), is(newCountry));
+
+    }
 
 
-    // DELETE tests
+    /** DELETE tests **/
+
+    // Test that a given coin can be deleted from the database
+    @Test
+    public void should_delete_a_specified_coin_from_collection(){
+        assertThat(coinList.deleteCoin(1), is(true));     // deletes the coin in the setup function
+    }
+
 
 }

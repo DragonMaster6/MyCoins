@@ -1,6 +1,7 @@
 package com.personal.mycoins;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -17,6 +18,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,7 +36,7 @@ import com.personal.mycoins.database.CoinSchema;
 /**
  * Author: Ben Matson
  * Date Created: 11/17/16
- * Last Edited: 12/7/16
+ * Last Edited: 12/8/16
  * Purpose: This will display to the user their coins sorted by year
  */
 
@@ -104,7 +106,7 @@ public class CoinListFragment extends Fragment{
                 //Toast.makeText(getContext(), "Adding coin", Toast.LENGTH_LONG).show();
                 FragmentManager fm = getFragmentManager();
                 CoinTemplateFragment frag = CoinTemplateFragment.getInstance(-1, CoinTemplateFragment.TEMPLATE_WRITE);
-                fm.beginTransaction().replace(R.id.coin_display, frag).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.coin_display, frag).addToBackStack(null).commit();
                 break;
         }
 
@@ -115,10 +117,12 @@ public class CoinListFragment extends Fragment{
     /** THis is the CoinList Adapter that handles the views of each item in the database **/
     public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ViewHolder>{
         private Cursor coins;       // This is the collection of coins from the database
+        private Coin collection;    // This is used to help remove coins from the database
 
         // Constructor 1: get all the coins from the database
         public CoinListAdapter(Coin collection){
             coins = collection.getCoins();
+            this.collection = collection;
         }
         // Constructor 2: get a specified set of coins from the database
         public CoinListAdapter(Coin collection, String criteria){
@@ -129,7 +133,7 @@ public class CoinListFragment extends Fragment{
         public void onBindViewHolder(final ViewHolder vh, int pos){
             // Move the cursor of the selection to the position of the coin
             coins.moveToPosition(pos);
-            int id = coins.getInt(coins.getColumnIndexOrThrow(CoinSchema.coins._ID));
+           final int id = coins.getInt(coins.getColumnIndexOrThrow(CoinSchema.coins.TABLE_NAME+CoinSchema.coins._ID));
             vh.tempText.setText("Coin "+coins.getInt(coins.getColumnIndexOrThrow("coins_id")));
 
             /** TODO: If there is no image to work with set a textview ontop of the default image to
@@ -152,6 +156,35 @@ public class CoinListFragment extends Fragment{
                 }
             });
 
+            vh.container.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Toast.makeText(getContext(), "I've been long clicked", Toast.LENGTH_LONG).show();
+                    vh.deleteBtn.setVisibility(View.VISIBLE);
+                    vh.container.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.item_highlight));
+                    vh.deleteBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getContext(), "Deleting button", Toast.LENGTH_LONG).show();
+                            // Remove the coin from the database
+                            Log.d("COIN ID",""+id);
+                            collection.deleteCoin(id);
+
+                            // remove the delete button from view
+                            vh.deleteBtn.setVisibility(View.GONE);
+
+                            // Notify that the dataset changed
+                            refreshData();
+                            coinAdapter.notifyItemRemoved(vh.getAdapterPosition());
+                            coinAdapter.notifyDataSetChanged();
+                        }
+                    });
+
+                    // Ensures that we don't have a double click trigger happening at the same time
+                    return true;
+                }
+            });
+
         }
 
         @Override
@@ -162,13 +195,21 @@ public class CoinListFragment extends Fragment{
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup container, int pos){
             View v = LayoutInflater.from(container.getContext()).inflate(R.layout.viewholder_coin, container,false);
+            container.setClickable(true);
+
             return new ViewHolder(v);
+        }
+
+        public void refreshData(){
+            // NOTE: This will break the search features; be sure to save search criteria
+            coins = collection.getCoins();
         }
 
         // Class to display an item to the list
         public class ViewHolder extends RecyclerView.ViewHolder{
             public ImageView frontImg;          // This will be the front of the selected coin
             public ImageView backImg;           // This is the back of the selected coin
+            public ImageView deleteBtn;         // This button will activate when the user long presses the viewholder
             public TextView tempText;
             public LinearLayout container;
             public ViewHolder(View v){
@@ -176,6 +217,7 @@ public class CoinListFragment extends Fragment{
                 frontImg = (ImageView) v.findViewById(R.id.coin_front);
                 backImg = (ImageView) v.findViewById(R.id.coin_back);
                 tempText = (TextView) v.findViewById(R.id.temp_text);
+                deleteBtn = (ImageView) v.findViewById(R.id.coin_delete_btn);
                 container = (LinearLayout) v.findViewById(R.id.coin_item_container);
             }
         }

@@ -23,4 +23,5 @@
     <string name="coin_type_edit"> coin type </string>
 
     <string name="menu_add_coin">Add</string>
+    <string name="menu_delete_coin">Delete</string>
 </resources>
