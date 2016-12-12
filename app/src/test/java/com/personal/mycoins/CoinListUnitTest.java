@@ -165,7 +165,7 @@ public class CoinListUnitTest {
 
         newCoin.put(CoinSchema.coins.COL_COUNTRY, newCountry);
 
-        boolean result = coinList.updateCoin(newCoin);
+        boolean result = coinList.updateCoin(newCoin, 0);
         Cursor updatedCoin = coinList.getCoin(0);
         updatedCoin.moveToFirst();
 

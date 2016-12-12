@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,7 +29,7 @@ import java.util.Set;
 /**
  * Author: Ben Matson
  * Date Created: 12/2/16
- * Last Edited: 12/8/16
+ * Last Edited: 12/12/16
  * Purpose: This class will allow Creation, Reads, and Updates to individual coins by following a basic layout
  *          replacing TextViews with EditViews and vice versa
  */
@@ -57,7 +58,7 @@ public class CoinTemplateFragment extends Fragment {
         super.onCreate(savedInstance);
 
         // unpack the arguments
-        Bundle args = getArguments();
+        final Bundle args = getArguments();
         mCollection = new Coin(getContext());
 
         // Check the id argument if there is a coin to fetch
@@ -160,6 +161,12 @@ public class CoinTemplateFragment extends Fragment {
                 break;
             case 2:
                 // This is the read state. Just update the detail section with proper information
+                // First update the coin entry just in case data has changed
+                Log.d("ID COIN","["+mEntry.getInt(mEntry.getColumnIndex(CoinSchema.coins.TABLE_NAME+CoinSchema.coins._ID))+"]");
+                mEntry = mCollection.getCoin(mEntry.getInt(mEntry.getColumnIndex(CoinSchema.coins.TABLE_NAME+CoinSchema.coins._ID)));
+                mEntry.moveToFirst();
+
+                // Update the fields now
                 typeField.setText(mEntry.getString(mEntry.getColumnIndex(CoinSchema.coinTypes.COL_TITLE)));
                 yearField.setText(""+mEntry.getInt(mEntry.getColumnIndex(CoinSchema.coins.COL_YEAR)));
                 String mint = mEntry.getString(mEntry.getColumnIndex(CoinSchema.coins.COL_MINT));
