@@ -56,7 +56,8 @@ public class Coin {
     // method that gets all the coins from the database
     public Cursor getCoins(){
         return db.rawQuery("SELECT "+CoinSchema.coins.TABLE_NAME+"."+CoinSchema.coins._ID+" AS coins_id,* FROM "+CoinSchema.coins.TABLE_NAME+","+CoinSchema.coinTypes.TABLE_NAME+" WHERE "+
-                CoinSchema.coins.COL_TYPEID+"="+CoinSchema.coinTypes.TABLE_NAME+"."+CoinSchema.coinTypes._ID, null);
+                CoinSchema.coins.COL_TYPEID+"="+CoinSchema.coinTypes.TABLE_NAME+"."+CoinSchema.coinTypes._ID+
+                " ORDER BY "+CoinSchema.coinTypes.COL_VALUE+" DESC", null);
     }
 
 

@@ -133,8 +133,32 @@ public class CoinListFragment extends Fragment{
         public void onBindViewHolder(final ViewHolder vh, int pos){
             // Move the cursor of the selection to the position of the coin
             coins.moveToPosition(pos);
-           final int id = coins.getInt(coins.getColumnIndexOrThrow(CoinSchema.coins.TABLE_NAME+CoinSchema.coins._ID));
-            vh.tempText.setText("Coin "+coins.getInt(coins.getColumnIndexOrThrow("coins_id")));
+            final int id = coins.getInt(coins.getColumnIndexOrThrow(CoinSchema.coins.TABLE_NAME+CoinSchema.coins._ID));
+            // Set the coin type
+            switch(coins.getInt(coins.getColumnIndex(CoinSchema.coins.COL_TYPEID))){
+                case 0:
+                    // This is a Quarter
+                    vh.frontText.setText(R.string.coin_quarter);
+                    break;
+                case 1:
+                    // This is a Dime
+                    vh.frontText.setText(R.string.coin_dime);
+                    break;
+                case 2:
+                    // This is a Nickel
+                    vh.frontText.setText(R.string.coin_nickel);
+                    break;
+                case 3:
+                    // This is a penny
+                    vh.frontText.setText(R.string.coin_penny);
+                    break;
+                default:
+                    vh.frontText.setText(R.string.coin_other);
+                    break;
+            }
+            // Set the year
+            vh.backText.setText(""+coins.getInt(coins.getColumnIndex(CoinSchema.coins.COL_YEAR)));
+
 
             /** TODO: If there is no image to work with set a textview ontop of the default image to
              *        display the coin's type and year for easy reading
@@ -210,13 +234,15 @@ public class CoinListFragment extends Fragment{
             public ImageView frontImg;          // This will be the front of the selected coin
             public ImageView backImg;           // This is the back of the selected coin
             public ImageView deleteBtn;         // This button will activate when the user long presses the viewholder
-            public TextView tempText;
+            public TextView frontText;          // This will display the Coin type in case there is no image to view
+            public TextView backText;           // This will display the Coin year in case there is no image to view
             public LinearLayout container;
             public ViewHolder(View v){
                 super(v);
                 frontImg = (ImageView) v.findViewById(R.id.coin_front);
                 backImg = (ImageView) v.findViewById(R.id.coin_back);
-                tempText = (TextView) v.findViewById(R.id.temp_text);
+                frontText = (TextView) v.findViewById(R.id.coin_front_text);
+                backText = (TextView) v.findViewById(R.id.coin_back_text);
                 deleteBtn = (ImageView) v.findViewById(R.id.coin_delete_btn);
                 container = (LinearLayout) v.findViewById(R.id.coin_item_container);
             }

@@ -21,6 +21,11 @@
     <string name="mint_p"> Pennsylvania </string>
 
     <string name="coin_type_edit"> coin type </string>
+    <string name="coin_quarter">Quarter</string>
+    <string name="coin_dime">Dime</string>
+    <string name="coin_nickel">Nickel</string>
+    <string name="coin_penny">Penny</string>
+    <string name="coin_other">Other</string>
 
     <string name="menu_add_coin">Add</string>
     <string name="menu_delete_coin">Delete</string>
