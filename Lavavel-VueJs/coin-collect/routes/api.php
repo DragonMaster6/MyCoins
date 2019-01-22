@@ -17,5 +17,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('coins', 'Api/CoinController');
-Route::resource('coinTypes', 'Api/CoinTypeController');
+Route::resource('coins', 'Api\CoinController');
+Route::resource('coinTypes', 'Api\CoinTypeController');

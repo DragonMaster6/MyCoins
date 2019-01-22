@@ -15,8 +15,7 @@ class CoinTypeController extends Controller
   * @return CoinTypeResource
   */
   public function index() {
-    $coinTypes = CoinType::listCoins()
-      ->paginate(20);
+    $coinTypes = CoinType::all();
     return CoinTypeResource::collection($coinTypes);
   }
 
