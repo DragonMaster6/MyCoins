@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\CoinType;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CoinResource extends JsonResource
@@ -14,6 +15,13 @@ class CoinResource extends JsonResource
    */
   public function toArray($request)
   {
-      return parent::toArray($request);
+    // TODO: Get the coin type and push it to the array.
+    return [
+      'id' => $this->id,
+      'year' => $this->year,
+      'type' => CoinType::findOrFail($this->type),
+      'mint' => $this->mint,
+      'description' => $this->description,
+    ];
   }
 }

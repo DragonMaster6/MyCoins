@@ -11,15 +11,24 @@
     <div id="app">
       <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand" href="#">
-          Brand Name
+          Coin Collection
         </a>
-        <ul class="navbar-nav">
+        <ul class="navbar-nav mr-auto">
           <li class="navbar-item"> Home </li>
         </ul>
       </nav>
 
-      <!-- Display the rest of the website -->
-      @yield('content')
+      <!-- Create a Master-View Layout -->
+      <div class="container-full">
+        <div class="row">
+          <div class="master-container col-md-3">
+            Quick Searching bar
+          </div>
+          <div class="detail-container col-md-9">
+            @yield('content')
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="{{ mix('js/app.js') }}"></script>

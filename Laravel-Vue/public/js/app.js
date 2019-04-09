@@ -36900,17 +36900,23 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "coin-list" },
+    { staticClass: "coin-list row" },
     _vm._l(_vm.coins, function(coin) {
-      return _c("div", { staticClass: "coin-item col-3" }, [
-        _c("div", { staticClass: "coin-item-header" }, [
-          _vm._v(" " + _vm._s(coin.type) + " ")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "coin-item-body" }, [
-          _vm._v(" " + _vm._s(coin.description) + " ")
-        ])
-      ])
+      return _c(
+        "div",
+        { staticClass: "coin-item col-md-3 col-sm-4 col-xs-12" },
+        [
+          _c("div", { staticClass: "coin-item-header" }, [
+            _vm._v(
+              " " + _vm._s(coin.type.name) + " - " + _vm._s(coin.year) + " "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "coin-item-body" }, [
+            _vm._v(" " + _vm._s(coin.description) + " ")
+          ])
+        ]
+      )
     }),
     0
   )

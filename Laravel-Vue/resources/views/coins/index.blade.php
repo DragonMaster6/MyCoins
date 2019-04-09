@@ -1,9 +1,7 @@
 @extends('master')
 
 @section('content')
-  <div class="container">
-    <div class="row">
+  <!-- <div> -->
       <coin-list></coin-list>
-    </div>
-  </div>
+  <!-- </div> -->
 @endsection

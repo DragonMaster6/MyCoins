@@ -1,7 +1,7 @@
 <template>
-  <div class="coin-list">
-    <div class="coin-item col-3" v-for="coin in coins">
-      <div class="coin-item-header"> {{ coin.type }} </div>
+  <div class="coin-list row">
+    <div class="coin-item col-md-3 col-sm-4 col-xs-12" v-for="coin in coins">
+      <div class="coin-item-header"> {{ coin.type.name }} - {{ coin.year}} </div>
       <div class="coin-item-body"> {{ coin.description }} </div>
     </div>
   </div>

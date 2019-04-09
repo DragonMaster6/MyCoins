@@ -1,0 +1,19 @@
+// Styles specific to the coin list component
+coin-list {
+  display: block;
+}
+
+.coin-list {
+  .coin-item {
+    // display: inline-block;
+    .coin-item-header {
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .coin-item-body {
+
+    }
+  }
+
+}
