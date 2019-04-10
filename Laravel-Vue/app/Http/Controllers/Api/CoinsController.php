@@ -16,4 +16,26 @@ class CoinsController extends Controller
 
     return CoinResource::collection($coins);
   }
+
+  // Retrieves a single coin from the database
+  function show($id) {
+    return new CoinResource(Coin::find($id));
+  }
+
+  // Handles new coin requests and adds them to the database
+  function create(Request $request) {
+    // First and foremost, validate the input
+    $validatedData = $request->validate([
+      'type' => 'required',
+      'mint' => 'required',
+      'year' => 'required',
+      'origin' => 'required',
+      'description' => 'nullable'
+    ]);
+
+    // If all goes smoothly, insert it into the database
+    $new_coin = Coin::create($validatedData);
+
+    return new CoinResource($new_coin);
+  }
 }
