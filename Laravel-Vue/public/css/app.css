@@ -9,6 +9,29 @@ coin-list {
   text-align: center;
 }
 
+.coin-actions {
+  display: inline-block;
+  position: relative;
+  border-radius: 50%;
+  background-color: #6cb2eb;
+  font-weight: bold;
+  font-size: 2em;
+  text-align: center;
+  border: solid 1px #3490dc;
+  float: right;
+  margin-right: 50px;
+  margin-left: 50px;
+}
+
+.coin-actions .btn {
+  display: block;
+  margin: auto;
+}
+
+.coin-actions .btn:focus {
+  box-shadow: none;
+}
+
 /*!
  * Bootstrap v4.3.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors

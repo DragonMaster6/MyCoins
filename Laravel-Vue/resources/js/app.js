@@ -8,6 +8,7 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+window.BootstrapVue = require('bootstrap-vue');
 
 /**
  * The following block of code may be used to automatically register your
@@ -30,5 +31,8 @@ Vue.component('coin-list', require('./components/CoinList.vue').default);
  */
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    data: {
+      newCoinPop: false,
+    }
 });

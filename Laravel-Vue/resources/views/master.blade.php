@@ -13,9 +13,6 @@
         <a class="navbar-brand" href="#">
           Coin Collection
         </a>
-        <ul class="navbar-nav mr-auto">
-          <li class="navbar-item"> Home </li>
-        </ul>
       </nav>
 
       <!-- Create a Master-View Layout -->
