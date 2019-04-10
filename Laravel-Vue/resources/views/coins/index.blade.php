@@ -13,17 +13,6 @@
           <button class="btn btn-light btn-sm"> New Coin Type </button>
         </div>
       </div> -->
-      <div class="coin-actions">
-        <button id="coin-action-pop"
-          class="btn btn-lg"
-          @click="newCoinPop=!newCoinPop"> + </button>
-
-        <b-popover :show.sync="newCoinPop"
-          placement="top"
-          target="coin-action-pop">
-          <button class="btn btn-light btn-sm"> New Coin </button>
-          <button class="btn btn-light btn-sm"> New Coin Type </button>
-        </b-popover>
-      </div>
+      
   <!-- </div> -->
 @endsection

@@ -1754,6 +1754,77 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Coin.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Coin.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      endpoint: 'api/coins',
+      coin: null
+    };
+  },
+  props: ['currentCoin'],
+  watch: {
+    currentCoin: function currentCoin(coinId, oldCoinId) {
+      console.log("Getting a coin...");
+      this.getCoin(coinId);
+    }
+  },
+  methods: {
+    getCoin: function getCoin(coinId) {
+      var _this = this;
+
+      axios.get(this.endpoint + '/' + coinId).then(function (_ref) {
+        var data = _ref.data;
+        console.log("Coin retrievied", data);
+        _this.coin = data.data;
+      })["catch"](function (error) {
+        console.log("Unable to retrieve the coin");
+        _this.coin = null;
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CoinList.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CoinList.vue?vue&type=script&lang=js& ***!
@@ -1772,13 +1843,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       endpoint: 'api/coins?page=',
       page: 1,
       test: 'Hello world',
-      coins: {}
+      coins: {},
+      currentCoin: -1,
+      newCoinPop: false
     };
   },
   mounted: function mounted() {
@@ -60979,6 +61082,74 @@ var __assign=function(){return(__assign=Object.assign||function(e){for(var a,s=1
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Coin.vue?vue&type=template&id=78ea74fc&":
+/*!*******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Coin.vue?vue&type=template&id=78ea74fc& ***!
+  \*******************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container-fluid" }, [
+    _vm.coin
+      ? _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col" }, [
+            _c("div", { staticClass: "coin-image" }, [
+              _vm._v("\n        Image goes here\n      ")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "coin-desc" }, [
+              _vm._v("\n        " + _vm._s(_vm.coin.description) + "\n      ")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col" }, [
+            _c("label", [_vm._v(" Type: ")]),
+            _vm._v(" "),
+            _c("p", [_vm._v(" " + _vm._s(_vm.coin.type.name) + " ")]),
+            _vm._v(" "),
+            _c("label", [_vm._v(" Mint: ")]),
+            _vm._v(" "),
+            _c("p", [_vm._v(" " + _vm._s(_vm.coin.mint) + " ")]),
+            _vm._v(" "),
+            _c("label", [_vm._v(" Year: ")]),
+            _vm._v(" "),
+            _c("p", [_vm._v(" " + _vm._s(_vm.coin.year) + " ")]),
+            _vm._v(" "),
+            _c("label", [_vm._v(" origin: ")]),
+            _vm._v(" "),
+            _c("p", [_vm._v(" " + _vm._s(_vm.coin.type.origin) + " ")]),
+            _vm._v(" "),
+            _c("button", { staticClass: "btn btn-secondary" }, [
+              _vm._v(" Edit ")
+            ]),
+            _vm._v(" "),
+            _c("button", { staticClass: "btn btn-primary" }, [
+              _vm._v(" Save ")
+            ]),
+            _vm._v(" "),
+            _c("button", { staticClass: "btn btn-danger" }, [
+              _vm._v(" Delete ")
+            ])
+          ])
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CoinList.vue?vue&type=template&id=42bb8e8c&":
 /*!***********************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CoinList.vue?vue&type=template&id=42bb8e8c& ***!
@@ -60996,25 +61167,117 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "coin-list row" },
-    _vm._l(_vm.coins, function(coin) {
-      return _c(
+    { staticClass: "coin-container" },
+    [
+      _c(
         "div",
-        { staticClass: "coin-item col-md-3 col-sm-4 col-xs-12" },
+        { staticClass: "coin-list row" },
+        _vm._l(_vm.coins, function(coin) {
+          return _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "b-modal",
+                  rawName: "v-b-modal",
+                  value: "coin-modal",
+                  expression: "'coin-modal'"
+                }
+              ],
+              staticClass: "coin-item col-md-3 col-sm-4 col-xs-12",
+              on: {
+                click: function($event) {
+                  _vm.currentCoin = coin.id
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "coin-item-header" }, [
+                _vm._v(
+                  " " + _vm._s(coin.type.name) + " - " + _vm._s(coin.year) + " "
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "coin-item-body" }, [
+                _vm._v(" " + _vm._s(coin.description) + " ")
+              ])
+            ]
+          )
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "coin-actions" },
         [
-          _c("div", { staticClass: "coin-item-header" }, [
-            _vm._v(
-              " " + _vm._s(coin.type.name) + " - " + _vm._s(coin.year) + " "
-            )
-          ]),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-lg",
+              attrs: { id: "coin-action-pop" },
+              on: {
+                click: function($event) {
+                  _vm.newCoinPop = !_vm.newCoinPop
+                }
+              }
+            },
+            [_vm._v(" + ")]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "coin-item-body" }, [
-            _vm._v(" " + _vm._s(coin.description) + " ")
-          ])
-        ]
+          _c(
+            "b-popover",
+            {
+              attrs: {
+                show: _vm.newCoinPop,
+                placement: "top",
+                target: "coin-action-pop"
+              },
+              on: {
+                "update:show": function($event) {
+                  _vm.newCoinPop = $event
+                }
+              }
+            },
+            [
+              _c(
+                "button",
+                {
+                  directives: [
+                    {
+                      name: "b-modal",
+                      rawName: "v-b-modal",
+                      value: "coin-modal",
+                      expression: "'coin-modal'"
+                    }
+                  ],
+                  staticClass: "btn btn-light btn-sm",
+                  on: {
+                    click: function($event) {
+                      _vm.currentCoin = -1
+                    }
+                  }
+                },
+                [_vm._v("\n        New Coin\n      ")]
+              ),
+              _vm._v(" "),
+              _c("button", { staticClass: "btn btn-light btn-sm" }, [
+                _vm._v("\n        New Coin Type\n      ")
+              ])
+            ]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        { attrs: { id: "coin-modal" } },
+        [_c("coin", { attrs: { currentCoin: _vm.currentCoin } })],
+        1
       )
-    }),
-    0
+    ],
+    1
   )
 }
 var staticRenderFns = []
@@ -73235,6 +73498,7 @@ window.BootstrapVue = __webpack_require__(/*! bootstrap-vue */ "./node_modules/b
 
 Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
 Vue.component('coin-list', __webpack_require__(/*! ./components/CoinList.vue */ "./resources/js/components/CoinList.vue")["default"]);
+Vue.component('coin', __webpack_require__(/*! ./components/Coin.vue */ "./resources/js/components/Coin.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -73243,9 +73507,7 @@ Vue.component('coin-list', __webpack_require__(/*! ./components/CoinList.vue */ 
 
 var app = new Vue({
   el: '#app',
-  data: {
-    newCoinPop: false
-  }
+  data: {}
 });
 
 /***/ }),
@@ -73305,6 +73567,76 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/Coin.vue":
+/*!******************************************!*\
+  !*** ./resources/js/components/Coin.vue ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Coin_vue_vue_type_template_id_78ea74fc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Coin.vue?vue&type=template&id=78ea74fc& */ "./resources/js/components/Coin.vue?vue&type=template&id=78ea74fc&");
+/* harmony import */ var _Coin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Coin.vue?vue&type=script&lang=js& */ "./resources/js/components/Coin.vue?vue&type=script&lang=js&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Coin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Coin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Coin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Coin_vue_vue_type_template_id_78ea74fc___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Coin_vue_vue_type_template_id_78ea74fc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Coin.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Coin.vue?vue&type=script&lang=js&":
+/*!*******************************************************************!*\
+  !*** ./resources/js/components/Coin.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Coin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Coin.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Coin.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Coin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Coin.vue?vue&type=template&id=78ea74fc&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/Coin.vue?vue&type=template&id=78ea74fc& ***!
+  \*************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Coin_vue_vue_type_template_id_78ea74fc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Coin.vue?vue&type=template&id=78ea74fc& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Coin.vue?vue&type=template&id=78ea74fc&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Coin_vue_vue_type_template_id_78ea74fc___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Coin_vue_vue_type_template_id_78ea74fc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 

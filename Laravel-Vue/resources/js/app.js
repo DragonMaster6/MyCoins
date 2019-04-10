@@ -23,6 +23,7 @@ window.BootstrapVue = require('bootstrap-vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('coin-list', require('./components/CoinList.vue').default);
+Vue.component('coin', require('./components/Coin.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -33,6 +34,5 @@ Vue.component('coin-list', require('./components/CoinList.vue').default);
 const app = new Vue({
     el: '#app',
     data: {
-      newCoinPop: false,
-    }
+    },
 });
