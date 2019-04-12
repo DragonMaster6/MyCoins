@@ -3,6 +3,9 @@
     Edit Mode: {{ editMode }}
     New Coin: {{ newCoin }}
     <div class="row">
+      {{ coin }}
+    </div>
+    <div class="row">
       <div class="col">
         <div class="coin-image">
           Image goes here
@@ -28,9 +31,14 @@
           </p>
           <!-- TODO: Make this a select -->
           <!-- TODO: When this changes, the origin needs to change too -->
-          <input type="text" name="coin-type" class="col-sm-9"
+          <b-form-select @input="coinTypeChange($event)"
+            :options="coinTypeOptions"
+            v-show="editMode">
+          </b-form-select>
+
+          <!-- <input type="text" name="coin-type" class="col-sm-9"
             v-show="editMode"
-            v-model="coin.type.name">
+            v-model="coin.type.name"> -->
         </div>
         <!-- Coin Mint Field -->
         <div class="form-group row">
@@ -57,22 +65,13 @@
         <!-- Coin Origin Field -->
         <!-- NOTE: Don't edit this field since it depends on the type -->
         <div class="form-group row">
-          <label class="form-label col-sm-3"> Type: </label>
+          <label class="form-label col-sm-3"> Origin: </label>
           <p class="col-sm-9"
             v-show="coin.type.name && !editMode">
             {{ coin.type.name }}
           </p>
           <p v-show="editMode"> This field depends on the Coin Type </p>
         </div>
-
-        <!-- <label> Type: </label>
-        <p> {{coin.type.name}} </p>
-        <label> Mint: </label>
-        <p> {{coin.mint}} </p>
-        <label> Year: </label>
-        <p> {{coin.year}} </p>
-        <label> origin: </label>
-        <p> {{coin.type.origin}} </p> -->
 
         <!-- Actions: Edit, save, delete, etc -->
         <button class="btn btn-secondary"
@@ -99,14 +98,19 @@ export default {
     return {
       endpoint: 'api/coins',
       coin: {type:{}},
+      coinTypes: [],
+      coinTypeOptions: [],
       editMode: false,
       newCoin: false,
     };
   },
   props: ['currentCoin'],
   mounted: function() {
+    // Retrieve a fake coin.. might change this to init the states.
     this.getCoin(this.currentCoin);
     console.log("Coin Template Created");
+    // Retrieve the different coin types.
+    this.getCoinTypes();
   },
   watch: {
     currentCoin: function(coinId, oldCoinId) {
@@ -115,6 +119,19 @@ export default {
     }
   },
   methods: {
+    getCoinTypes: function() {
+      axios.get('api/cointypes')
+      .then(({data}) => {
+        this.coinTypes = data.data;
+        this.coinTypeOptions = data.data.map((value) => {
+          return {value: value.id, text: value.name};
+        });
+        console.log(this.coinTypes);
+      })
+      .catch((error) => {
+        console.log("There was an issue getting the coin types");
+      })
+    },
     getCoin: function(coinId) {
       axios.get(this.endpoint + '/' + coinId)
         .then(({data}) => {
@@ -135,6 +152,47 @@ export default {
           this.newCoin = true;
         });
     },
+    // When the user selects a different coin type, repopulate the
+    // coin model.
+    coinTypeChange: function(data) {
+      console.log('Select data', data);
+      this.coin.type = this.coinTypes[data];
+    },
+    // Save the state of the current coin being viewed
+    saveCoin: function() {
+      // First and foremost, convert the coin type back to an id
+      this.coin.type = this.coin.type.id;
+      console.log("New Coin", this.coin);
+
+      // Determine to save a new coin or update an existing one.
+      // TODO: Need to emit an event to tell the coin list to refresh its list;
+      if (this.newCoin) {
+        axios.post('api/coins', this.coin)
+        .then(({data}) => {
+          // The response returned okay, refresh the coin and
+          // display a success message.
+          console.log("Coin Saved", data);
+
+        })
+        .catch((error) => {
+          // There was an error. Capture the message and display it.
+          console.error("Coin Error", error);
+        });
+      }
+      else {
+        axios.put('api/coins/'+this.coin.id, this.coin)
+        .then(({data}) => {
+          // The response returned okay, refresh the coin and
+          // display a success message.
+          console.log("Coin Saved", data);
+
+        })
+        .catch((error) => {
+          // There was an error. Capture the message and display it.
+          console.error("Coin Error", error);
+        });
+      }
+    }
   }
 }
 </script>

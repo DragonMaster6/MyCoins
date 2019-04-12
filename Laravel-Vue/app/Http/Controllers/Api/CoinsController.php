@@ -22,14 +22,13 @@ class CoinsController extends Controller
     return new CoinResource(Coin::findOrFail($id));
   }
 
-  // Handles new coin requests and adds them to the database
-  function create(Request $request) {
+  // Creates a new coin to be added to the collection of treasure.
+  function store(Request $request) {
     // First and foremost, validate the input
     $validatedData = $request->validate([
       'type' => 'required',
       'mint' => 'required',
       'year' => 'required',
-      'origin' => 'required',
       'description' => 'nullable'
     ]);
 
@@ -37,5 +36,23 @@ class CoinsController extends Controller
     $new_coin = Coin::create($validatedData);
 
     return new CoinResource($new_coin);
+  }
+
+  // Updates a coins information
+  function update(Request $request, $id) {
+    // First and foremost, validate the input
+    $validatedData = $request->validate([
+      'type' => 'required',
+      'mint' => 'required',
+      'year' => 'required',
+      'description' => 'nullable'
+    ]);
+
+    // Once validated, update the database entry.
+    $coin = Coin::findOrFail($id);
+
+    $coin->update($validatedData);
+
+    return json_encode("Coin Saved");
   }
 }

@@ -1857,7 +1857,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1865,14 +1864,19 @@ __webpack_require__.r(__webpack_exports__);
       coin: {
         type: {}
       },
+      coinTypes: [],
+      coinTypeOptions: [],
       editMode: false,
       newCoin: false
     };
   },
   props: ['currentCoin'],
   mounted: function mounted() {
+    // Retrieve a fake coin.. might change this to init the states.
     this.getCoin(this.currentCoin);
-    console.log("Coin Template Created");
+    console.log("Coin Template Created"); // Retrieve the different coin types.
+
+    this.getCoinTypes();
   },
   watch: {
     currentCoin: function currentCoin(coinId, oldCoinId) {
@@ -1881,27 +1885,79 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    getCoin: function getCoin(coinId) {
+    getCoinTypes: function getCoinTypes() {
       var _this = this;
 
-      axios.get(this.endpoint + '/' + coinId).then(function (_ref) {
+      axios.get('api/cointypes').then(function (_ref) {
         var data = _ref.data;
-        console.log("Coin retrievied", data);
-        _this.coin = data.data;
-        _this.editMode = false; // Don't want to create a new coin if one is found.
+        _this.coinTypes = data.data;
+        _this.coinTypeOptions = data.data.map(function (value) {
+          return {
+            value: value.id,
+            text: value.name
+          };
+        });
+        console.log(_this.coinTypes);
+      })["catch"](function (error) {
+        console.log("There was an issue getting the coin types");
+      });
+    },
+    getCoin: function getCoin(coinId) {
+      var _this2 = this;
 
-        if (_this.newCoin) {
-          _this.newCoin = false;
+      axios.get(this.endpoint + '/' + coinId).then(function (_ref2) {
+        var data = _ref2.data;
+        console.log("Coin retrievied", data);
+        _this2.coin = data.data;
+        _this2.editMode = false; // Don't want to create a new coin if one is found.
+
+        if (_this2.newCoin) {
+          _this2.newCoin = false;
         }
       })["catch"](function (error) {
         console.log("Unable to retrieve the coin"); // Set the coin to nothing and setup for a new coin.
 
-        _this.coin = {
+        _this2.coin = {
           type: {}
         };
-        _this.editMode = true;
-        _this.newCoin = true;
+        _this2.editMode = true;
+        _this2.newCoin = true;
       });
+    },
+    // When the user selects a different coin type, repopulate the
+    // coin model.
+    coinTypeChange: function coinTypeChange(data) {
+      console.log('Select data', data);
+      this.coin.type = this.coinTypes[data];
+    },
+    // Save the state of the current coin being viewed
+    saveCoin: function saveCoin() {
+      // First and foremost, convert the coin type back to an id
+      this.coin.type = this.coin.type.id;
+      console.log("New Coin", this.coin); // Determine to save a new coin or update an existing one.
+      // TODO: Need to emit an event to tell the coin list to refresh its list;
+
+      if (this.newCoin) {
+        axios.post('api/coins', this.coin).then(function (_ref3) {
+          var data = _ref3.data;
+          // The response returned okay, refresh the coin and
+          // display a success message.
+          console.log("Coin Saved", data);
+        })["catch"](function (error) {
+          // There was an error. Capture the message and display it.
+          console.error("Coin Error", error);
+        });
+      } else {
+        axios.put('api/coins/' + this.coin.id, this.coin).then(function (_ref4) {
+          var data = _ref4.data;
+          // The response returned okay, refresh the coin and
+          // display a success message.
+          console.log("Coin Saved", data);
+        })["catch"](function (error) {
+          // There was an error. Capture the message and display it.
+          console.error("Coin Error", error);
+        });
+      }
     }
   }
 });
@@ -61189,6 +61245,10 @@ var render = function() {
         "\n  "
     ),
     _c("div", { staticClass: "row" }, [
+      _vm._v("\n    " + _vm._s(_vm.coin) + "\n  ")
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col" }, [
         _c("div", { staticClass: "coin-image" }, [
           _vm._v("\n        Image goes here\n      ")
@@ -61245,55 +61305,53 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col" }, [
-        _c("div", { staticClass: "form-group row" }, [
-          _c("label", { staticClass: "form-label col-sm-3" }, [
-            _vm._v(" Type: ")
-          ]),
-          _vm._v(" "),
-          _c(
-            "p",
-            {
+        _c(
+          "div",
+          { staticClass: "form-group row" },
+          [
+            _c("label", { staticClass: "form-label col-sm-3" }, [
+              _vm._v(" Type: ")
+            ]),
+            _vm._v(" "),
+            _c(
+              "p",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.coin.type.name && !_vm.editMode,
+                    expression: "coin.type.name && !editMode"
+                  }
+                ],
+                staticClass: "col-sm-9"
+              },
+              [
+                _vm._v(
+                  "\n          " + _vm._s(_vm.coin.type.name) + "\n        "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c("b-form-select", {
               directives: [
                 {
                   name: "show",
                   rawName: "v-show",
-                  value: _vm.coin.type.name && !_vm.editMode,
-                  expression: "coin.type.name && !editMode"
+                  value: _vm.editMode,
+                  expression: "editMode"
                 }
               ],
-              staticClass: "col-sm-9"
-            },
-            [_vm._v("\n          " + _vm._s(_vm.coin.type.name) + "\n        ")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.editMode,
-                expression: "editMode"
-              },
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.coin.type.name,
-                expression: "coin.type.name"
-              }
-            ],
-            staticClass: "col-sm-9",
-            attrs: { type: "text", name: "coin-type" },
-            domProps: { value: _vm.coin.type.name },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+              attrs: { options: _vm.coinTypeOptions },
+              on: {
+                input: function($event) {
+                  return _vm.coinTypeChange($event)
                 }
-                _vm.$set(_vm.coin.type, "name", $event.target.value)
               }
-            }
-          })
-        ]),
+            })
+          ],
+          1
+        ),
         _vm._v(" "),
         _c("div", { staticClass: "form-group row" }, [
           _c("label", { staticClass: "form-label col-sm-3" }, [
@@ -61397,7 +61455,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "form-group row" }, [
           _c("label", { staticClass: "form-label col-sm-3" }, [
-            _vm._v(" Type: ")
+            _vm._v(" Origin: ")
           ]),
           _vm._v(" "),
           _c(

@@ -15,7 +15,6 @@ class CoinResource extends JsonResource
    */
   public function toArray($request)
   {
-    // TODO: Get the coin type and push it to the array.
     return [
       'id' => $this->id,
       'year' => $this->year,
