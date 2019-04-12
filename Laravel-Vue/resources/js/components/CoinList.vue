@@ -31,7 +31,7 @@
     </div>
 
     <!-- Modal displaying individual coins -->
-    <b-modal id="coin-modal">
+    <b-modal id="coin-modal" ok-only hide-header>
       <coin :currentCoin="currentCoin"></coin>
     </b-modal>
   </div>

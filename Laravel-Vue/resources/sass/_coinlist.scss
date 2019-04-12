@@ -15,7 +15,12 @@ coin-list {
 
     }
   }
+}
 
+.coin-image {
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(120deg, $teal, $blue);
 }
 
 .coin-actions {

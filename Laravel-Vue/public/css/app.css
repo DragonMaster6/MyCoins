@@ -9,6 +9,12 @@ coin-list {
   text-align: center;
 }
 
+.coin-image {
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(120deg, #4dc0b5, #3490dc);
+}
+
 .coin-actions {
   display: inline-block;
   position: relative;

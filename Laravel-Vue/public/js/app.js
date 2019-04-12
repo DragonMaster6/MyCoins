@@ -1793,14 +1793,87 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       endpoint: 'api/coins',
-      coin: null
+      coin: {
+        type: {}
+      },
+      editMode: false,
+      newCoin: false
     };
   },
   props: ['currentCoin'],
+  mounted: function mounted() {
+    this.getCoin(this.currentCoin);
+    console.log("Coin Template Created");
+  },
   watch: {
     currentCoin: function currentCoin(coinId, oldCoinId) {
       console.log("Getting a coin...");
@@ -1815,9 +1888,19 @@ __webpack_require__.r(__webpack_exports__);
         var data = _ref.data;
         console.log("Coin retrievied", data);
         _this.coin = data.data;
+        _this.editMode = false; // Don't want to create a new coin if one is found.
+
+        if (_this.newCoin) {
+          _this.newCoin = false;
+        }
       })["catch"](function (error) {
-        console.log("Unable to retrieve the coin");
-        _this.coin = null;
+        console.log("Unable to retrieve the coin"); // Set the coin to nothing and setup for a new coin.
+
+        _this.coin = {
+          type: {}
+        };
+        _this.editMode = true;
+        _this.newCoin = true;
       });
     }
   }
@@ -61098,49 +61181,342 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container-fluid" }, [
-    _vm.coin
-      ? _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col" }, [
-            _c("div", { staticClass: "coin-image" }, [
-              _vm._v("\n        Image goes here\n      ")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "coin-desc" }, [
-              _vm._v("\n        " + _vm._s(_vm.coin.description) + "\n      ")
-            ])
+    _vm._v(
+      "\n  Edit Mode: " +
+        _vm._s(_vm.editMode) +
+        "\n  New Coin: " +
+        _vm._s(_vm.newCoin) +
+        "\n  "
+    ),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col" }, [
+        _c("div", { staticClass: "coin-image" }, [
+          _vm._v("\n        Image goes here\n      ")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "coin-desc" }, [
+          _c("label", [_vm._v(" Description: ")]),
+          _vm._v(" "),
+          _c(
+            "p",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.coin.description && !_vm.editMode,
+                  expression: "coin.description && !editMode"
+                }
+              ]
+            },
+            [
+              _vm._v(
+                "\n          " + _vm._s(_vm.coin.description) + "\n        "
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c("textarea", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.editMode,
+                expression: "editMode"
+              },
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.coin.description,
+                expression: "coin.description"
+              }
+            ],
+            domProps: { value: _vm.coin.description },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.coin, "description", $event.target.value)
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col" }, [
+        _c("div", { staticClass: "form-group row" }, [
+          _c("label", { staticClass: "form-label col-sm-3" }, [
+            _vm._v(" Type: ")
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "col" }, [
-            _c("label", [_vm._v(" Type: ")]),
-            _vm._v(" "),
-            _c("p", [_vm._v(" " + _vm._s(_vm.coin.type.name) + " ")]),
-            _vm._v(" "),
-            _c("label", [_vm._v(" Mint: ")]),
-            _vm._v(" "),
-            _c("p", [_vm._v(" " + _vm._s(_vm.coin.mint) + " ")]),
-            _vm._v(" "),
-            _c("label", [_vm._v(" Year: ")]),
-            _vm._v(" "),
-            _c("p", [_vm._v(" " + _vm._s(_vm.coin.year) + " ")]),
-            _vm._v(" "),
-            _c("label", [_vm._v(" origin: ")]),
-            _vm._v(" "),
-            _c("p", [_vm._v(" " + _vm._s(_vm.coin.type.origin) + " ")]),
-            _vm._v(" "),
-            _c("button", { staticClass: "btn btn-secondary" }, [
-              _vm._v(" Edit ")
-            ]),
-            _vm._v(" "),
-            _c("button", { staticClass: "btn btn-primary" }, [
-              _vm._v(" Save ")
-            ]),
-            _vm._v(" "),
-            _c("button", { staticClass: "btn btn-danger" }, [
-              _vm._v(" Delete ")
-            ])
-          ])
-        ])
-      : _vm._e()
+          _c(
+            "p",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.coin.type.name && !_vm.editMode,
+                  expression: "coin.type.name && !editMode"
+                }
+              ],
+              staticClass: "col-sm-9"
+            },
+            [_vm._v("\n          " + _vm._s(_vm.coin.type.name) + "\n        ")]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.editMode,
+                expression: "editMode"
+              },
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.coin.type.name,
+                expression: "coin.type.name"
+              }
+            ],
+            staticClass: "col-sm-9",
+            attrs: { type: "text", name: "coin-type" },
+            domProps: { value: _vm.coin.type.name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.coin.type, "name", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group row" }, [
+          _c("label", { staticClass: "form-label col-sm-3" }, [
+            _vm._v(" Mint: ")
+          ]),
+          _vm._v(" "),
+          _c(
+            "p",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.coin.mint && !_vm.editMode,
+                  expression: "coin.mint && !editMode"
+                }
+              ],
+              staticClass: "col-sm-9"
+            },
+            [_vm._v("\n          " + _vm._s(_vm.coin.mint) + "\n        ")]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.editMode,
+                expression: "editMode"
+              },
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.coin.mint,
+                expression: "coin.mint"
+              }
+            ],
+            staticClass: "col-sm-9",
+            attrs: { type: "text", name: "coin-mint" },
+            domProps: { value: _vm.coin.mint },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.coin, "mint", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group row" }, [
+          _c("label", { staticClass: "form-label col-sm-3" }, [
+            _vm._v(" Year: ")
+          ]),
+          _vm._v(" "),
+          _c(
+            "p",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.coin.year && !_vm.editMode,
+                  expression: "coin.year && !editMode"
+                }
+              ],
+              staticClass: "col-sm-9"
+            },
+            [_vm._v("\n          " + _vm._s(_vm.coin.year) + "\n        ")]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.editMode,
+                expression: "editMode"
+              },
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.coin.year,
+                expression: "coin.year"
+              }
+            ],
+            staticClass: "col-sm-9",
+            attrs: { type: "text", name: "coin-year" },
+            domProps: { value: _vm.coin.year },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.coin, "year", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group row" }, [
+          _c("label", { staticClass: "form-label col-sm-3" }, [
+            _vm._v(" Type: ")
+          ]),
+          _vm._v(" "),
+          _c(
+            "p",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.coin.type.name && !_vm.editMode,
+                  expression: "coin.type.name && !editMode"
+                }
+              ],
+              staticClass: "col-sm-9"
+            },
+            [_vm._v("\n          " + _vm._s(_vm.coin.type.name) + "\n        ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "p",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.editMode,
+                  expression: "editMode"
+                }
+              ]
+            },
+            [_vm._v(" This field depends on the Coin Type ")]
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: !_vm.editMode,
+                expression: "!editMode"
+              }
+            ],
+            staticClass: "btn btn-secondary",
+            on: {
+              click: function($event) {
+                _vm.editMode = true
+              }
+            }
+          },
+          [_vm._v(" Edit ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.editMode,
+                expression: "editMode"
+              }
+            ],
+            staticClass: "btn btn-primary",
+            on: {
+              click: function($event) {
+                return _vm.saveCoin()
+              }
+            }
+          },
+          [_vm._v(" Save ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.coin,
+                expression: "coin"
+              }
+            ],
+            staticClass: "btn btn-danger",
+            on: {
+              click: function($event) {
+                return _vm.deleteCoin()
+              }
+            }
+          },
+          [_vm._v(" Delete ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.editMode,
+                expression: "editMode"
+              }
+            ],
+            staticClass: "btn btn-secondary",
+            on: {
+              click: function($event) {
+                _vm.editMode = false
+              }
+            }
+          },
+          [_vm._v(" Cancel ")]
+        )
+      ])
+    ])
   ])
 }
 var staticRenderFns = []
@@ -61272,7 +61648,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "b-modal",
-        { attrs: { id: "coin-modal" } },
+        { attrs: { id: "coin-modal", "ok-only": "", "hide-header": "" } },
         [_c("coin", { attrs: { currentCoin: _vm.currentCoin } })],
         1
       )
@@ -73574,15 +73950,14 @@ if (token) {
 /*!******************************************!*\
   !*** ./resources/js/components/Coin.vue ***!
   \******************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Coin_vue_vue_type_template_id_78ea74fc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Coin.vue?vue&type=template&id=78ea74fc& */ "./resources/js/components/Coin.vue?vue&type=template&id=78ea74fc&");
 /* harmony import */ var _Coin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Coin.vue?vue&type=script&lang=js& */ "./resources/js/components/Coin.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Coin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Coin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -73612,7 +73987,7 @@ component.options.__file = "resources/js/components/Coin.vue"
 /*!*******************************************************************!*\
   !*** ./resources/js/components/Coin.vue?vue&type=script&lang=js& ***!
   \*******************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

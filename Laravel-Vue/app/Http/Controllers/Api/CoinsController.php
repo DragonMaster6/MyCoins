@@ -19,7 +19,7 @@ class CoinsController extends Controller
 
   // Retrieves a single coin from the database
   function show($id) {
-    return new CoinResource(Coin::find($id));
+    return new CoinResource(Coin::findOrFail($id));
   }
 
   // Handles new coin requests and adds them to the database
