@@ -5,6 +5,14 @@
     <div class="row">
       {{ coin }}
     </div>
+    <div class="row" v-show="message || errMsg">
+      <div class="alert alert-success" v-show="message">
+        {{ message }}
+      </div>
+      <div class="alert alert-danger" v-show="errMsg">
+        {{ errMsg }}
+      </div>
+    </div>
     <div class="row">
       <div class="col">
         <div class="coin-image">
@@ -29,16 +37,12 @@
             v-show="coin.type.name && !editMode">
             {{ coin.type.name }}
           </p>
-          <!-- TODO: Make this a select -->
-          <!-- TODO: When this changes, the origin needs to change too -->
+
+          <!-- TODO: Small bug where it doesn't show the currently selected type. -->
           <b-form-select @input="coinTypeChange($event)"
             :options="coinTypeOptions"
             v-show="editMode">
           </b-form-select>
-
-          <!-- <input type="text" name="coin-type" class="col-sm-9"
-            v-show="editMode"
-            v-model="coin.type.name"> -->
         </div>
         <!-- Coin Mint Field -->
         <div class="form-group row">
@@ -102,6 +106,8 @@ export default {
       coinTypeOptions: [],
       editMode: false,
       newCoin: false,
+      message: '',
+      errMsg: '',
     };
   },
   props: ['currentCoin'],
@@ -155,14 +161,12 @@ export default {
     // When the user selects a different coin type, repopulate the
     // coin model.
     coinTypeChange: function(data) {
-      console.log('Select data', data);
       this.coin.type = this.coinTypes[data];
     },
     // Save the state of the current coin being viewed
     saveCoin: function() {
       // First and foremost, convert the coin type back to an id
       this.coin.type = this.coin.type.id;
-      console.log("New Coin", this.coin);
 
       // Determine to save a new coin or update an existing one.
       // TODO: Need to emit an event to tell the coin list to refresh its list;
@@ -172,11 +176,13 @@ export default {
           // The response returned okay, refresh the coin and
           // display a success message.
           console.log("Coin Saved", data);
+          this.message = "Successfully created a new coin.";
 
         })
         .catch((error) => {
           // There was an error. Capture the message and display it.
           console.error("Coin Error", error);
+          this.errMsg = "Unable to create a new coin.";
         });
       }
       else {
@@ -185,11 +191,13 @@ export default {
           // The response returned okay, refresh the coin and
           // display a success message.
           console.log("Coin Saved", data);
+          this.message = "Coin Successfully saved."
 
         })
         .catch((error) => {
           // There was an error. Capture the message and display it.
           console.error("Coin Error", error);
+          this.errMsg = "Unable to save the coin."
         });
       }
     }

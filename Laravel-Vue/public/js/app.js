@@ -1857,6 +1857,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1867,7 +1871,9 @@ __webpack_require__.r(__webpack_exports__);
       coinTypes: [],
       coinTypeOptions: [],
       editMode: false,
-      newCoin: false
+      newCoin: false,
+      message: '',
+      errMsg: ''
     };
   },
   props: ['currentCoin'],
@@ -1927,14 +1933,14 @@ __webpack_require__.r(__webpack_exports__);
     // When the user selects a different coin type, repopulate the
     // coin model.
     coinTypeChange: function coinTypeChange(data) {
-      console.log('Select data', data);
       this.coin.type = this.coinTypes[data];
     },
     // Save the state of the current coin being viewed
     saveCoin: function saveCoin() {
+      var _this3 = this;
+
       // First and foremost, convert the coin type back to an id
-      this.coin.type = this.coin.type.id;
-      console.log("New Coin", this.coin); // Determine to save a new coin or update an existing one.
+      this.coin.type = this.coin.type.id; // Determine to save a new coin or update an existing one.
       // TODO: Need to emit an event to tell the coin list to refresh its list;
 
       if (this.newCoin) {
@@ -1943,9 +1949,11 @@ __webpack_require__.r(__webpack_exports__);
           // The response returned okay, refresh the coin and
           // display a success message.
           console.log("Coin Saved", data);
+          _this3.message = "Successfully created a new coin.";
         })["catch"](function (error) {
           // There was an error. Capture the message and display it.
           console.error("Coin Error", error);
+          _this3.errMsg = "Unable to create a new coin.";
         });
       } else {
         axios.put('api/coins/' + this.coin.id, this.coin).then(function (_ref4) {
@@ -1953,9 +1961,11 @@ __webpack_require__.r(__webpack_exports__);
           // The response returned okay, refresh the coin and
           // display a success message.
           console.log("Coin Saved", data);
+          _this3.message = "Coin Successfully saved.";
         })["catch"](function (error) {
           // There was an error. Capture the message and display it.
           console.error("Coin Error", error);
+          _this3.errMsg = "Unable to save the coin.";
         });
       }
     }
@@ -61247,6 +61257,54 @@ var render = function() {
     _c("div", { staticClass: "row" }, [
       _vm._v("\n    " + _vm._s(_vm.coin) + "\n  ")
     ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.message || _vm.errMsg,
+            expression: "message || errMsg"
+          }
+        ],
+        staticClass: "row"
+      },
+      [
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.message,
+                expression: "message"
+              }
+            ],
+            staticClass: "alert alert-success"
+          },
+          [_vm._v("\n      " + _vm._s(_vm.message) + "\n    ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.errMsg,
+                expression: "errMsg"
+              }
+            ],
+            staticClass: "alert alert-danger"
+          },
+          [_vm._v("\n      " + _vm._s(_vm.errMsg) + "\n    ")]
+        )
+      ]
+    ),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col" }, [
