@@ -86,8 +86,16 @@
           @click="saveCoin()"> Save </button>
         <!-- TODO: Prevent the first delete by adding a confirm -->
         <button class="btn btn-danger"
-          v-show="coin"
-          @click="deleteCoin()"> Delete </button>
+          id="deleteBtn"
+          v-show="coin"> Delete </button>
+        <b-popover target="deleteBtn" triggers="focus"
+          :show.sync="confirmDelete">
+          <template slot="title"> Are you sure? </template>
+          <button class="btn btn-danger"
+            @click="deleteCoin()"> Delete Me! </button>
+          <button class="btn btn-primary"
+            @click="confirmDelete=false"> Panic! </button>
+        </b-popover>
         <button class="btn btn-secondary"
           v-show="editMode"
           @click="editMode=false"> Cancel </button>
@@ -106,6 +114,7 @@ export default {
       coinTypeOptions: [],
       editMode: false,
       newCoin: false,
+      confirmDelete: false,
       message: '',
       errMsg: '',
     };
@@ -200,6 +209,21 @@ export default {
           this.errMsg = "Unable to save the coin."
         });
       }
+    },
+    // Deletes the currently selected coin.
+    // TODO: Emit a list refresh to reflect the coin deletion.
+    deleteCoin: function() {
+      axios.delete('api/coins/' + this.coin.id)
+        .then(({data}) => {
+          // Successfully deleted the coin
+          this.message = "Deleted the coin succesfully";
+          this.confirmDelete = false;
+        })
+        .catch (error => {
+          // There was an error deleting the coin.
+          console.log("Coin Deletion", error);
+          this.errMsg = "Unable to delete the coin.";
+        })
     }
   }
 }

@@ -55,4 +55,14 @@ class CoinsController extends Controller
 
     return json_encode("Coin Saved");
   }
+
+  // Deletes a coin from the database
+  function destroy(Request $request, $id) {
+    // Find the coin to be deleted.
+    $coin = Coin::findOrFail($id);
+
+    $coin->delete();
+
+    return json_encode("Coin Deleted");
+  }
 }

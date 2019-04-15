@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
 // });
 
 Route::resource('coins', 'Api\CoinsController')
-  ->only('index', 'store', 'show', 'update');
+  ->only('index', 'store', 'show', 'update', 'destroy');
 
 Route::resource('cointypes', 'Api\CoinTypesController')
   ->only('index', 'store');

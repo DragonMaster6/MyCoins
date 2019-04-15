@@ -1861,6 +1861,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1872,6 +1880,7 @@ __webpack_require__.r(__webpack_exports__);
       coinTypeOptions: [],
       editMode: false,
       newCoin: false,
+      confirmDelete: false,
       message: '',
       errMsg: ''
     };
@@ -1968,6 +1977,22 @@ __webpack_require__.r(__webpack_exports__);
           _this3.errMsg = "Unable to save the coin.";
         });
       }
+    },
+    // Deletes the currently selected coin.
+    // TODO: Emit a list refresh to reflect the coin deletion.
+    deleteCoin: function deleteCoin() {
+      var _this4 = this;
+
+      axios["delete"]('api/coins/' + this.coin.id).then(function (_ref5) {
+        var data = _ref5.data;
+        // Successfully deleted the coin
+        _this4.message = "Deleted the coin succesfully";
+        _this4.confirmDelete = false;
+      })["catch"](function (error) {
+        // There was an error deleting the coin.
+        console.log("Coin Deletion", error);
+        _this4.errMsg = "Unable to delete the coin.";
+      });
     }
   }
 });
@@ -61362,13 +61387,161 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col" }, [
-        _c(
-          "div",
-          { staticClass: "form-group row" },
-          [
+      _c(
+        "div",
+        { staticClass: "col" },
+        [
+          _c(
+            "div",
+            { staticClass: "form-group row" },
+            [
+              _c("label", { staticClass: "form-label col-sm-3" }, [
+                _vm._v(" Type: ")
+              ]),
+              _vm._v(" "),
+              _c(
+                "p",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.coin.type.name && !_vm.editMode,
+                      expression: "coin.type.name && !editMode"
+                    }
+                  ],
+                  staticClass: "col-sm-9"
+                },
+                [
+                  _vm._v(
+                    "\n          " + _vm._s(_vm.coin.type.name) + "\n        "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("b-form-select", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.editMode,
+                    expression: "editMode"
+                  }
+                ],
+                attrs: { options: _vm.coinTypeOptions },
+                on: {
+                  input: function($event) {
+                    return _vm.coinTypeChange($event)
+                  }
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group row" }, [
             _c("label", { staticClass: "form-label col-sm-3" }, [
-              _vm._v(" Type: ")
+              _vm._v(" Mint: ")
+            ]),
+            _vm._v(" "),
+            _c(
+              "p",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.coin.mint && !_vm.editMode,
+                    expression: "coin.mint && !editMode"
+                  }
+                ],
+                staticClass: "col-sm-9"
+              },
+              [_vm._v("\n          " + _vm._s(_vm.coin.mint) + "\n        ")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.editMode,
+                  expression: "editMode"
+                },
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.coin.mint,
+                  expression: "coin.mint"
+                }
+              ],
+              staticClass: "col-sm-9",
+              attrs: { type: "text", name: "coin-mint" },
+              domProps: { value: _vm.coin.mint },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.coin, "mint", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group row" }, [
+            _c("label", { staticClass: "form-label col-sm-3" }, [
+              _vm._v(" Year: ")
+            ]),
+            _vm._v(" "),
+            _c(
+              "p",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.coin.year && !_vm.editMode,
+                    expression: "coin.year && !editMode"
+                  }
+                ],
+                staticClass: "col-sm-9"
+              },
+              [_vm._v("\n          " + _vm._s(_vm.coin.year) + "\n        ")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.editMode,
+                  expression: "editMode"
+                },
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.coin.year,
+                  expression: "coin.year"
+                }
+              ],
+              staticClass: "col-sm-9",
+              attrs: { type: "text", name: "coin-year" },
+              domProps: { value: _vm.coin.year },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.coin, "year", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group row" }, [
+            _c("label", { staticClass: "form-label col-sm-3" }, [
+              _vm._v(" Origin: ")
             ]),
             _vm._v(" "),
             _c(
@@ -61391,149 +61564,45 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
-            _c("b-form-select", {
+            _c(
+              "p",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.editMode,
+                    expression: "editMode"
+                  }
+                ]
+              },
+              [_vm._v(" This field depends on the Coin Type ")]
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
               directives: [
                 {
                   name: "show",
                   rawName: "v-show",
-                  value: _vm.editMode,
-                  expression: "editMode"
+                  value: !_vm.editMode,
+                  expression: "!editMode"
                 }
               ],
-              attrs: { options: _vm.coinTypeOptions },
+              staticClass: "btn btn-secondary",
               on: {
-                input: function($event) {
-                  return _vm.coinTypeChange($event)
+                click: function($event) {
+                  _vm.editMode = true
                 }
               }
-            })
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c("label", { staticClass: "form-label col-sm-3" }, [
-            _vm._v(" Mint: ")
-          ]),
-          _vm._v(" "),
-          _c(
-            "p",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.coin.mint && !_vm.editMode,
-                  expression: "coin.mint && !editMode"
-                }
-              ],
-              staticClass: "col-sm-9"
             },
-            [_vm._v("\n          " + _vm._s(_vm.coin.mint) + "\n        ")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.editMode,
-                expression: "editMode"
-              },
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.coin.mint,
-                expression: "coin.mint"
-              }
-            ],
-            staticClass: "col-sm-9",
-            attrs: { type: "text", name: "coin-mint" },
-            domProps: { value: _vm.coin.mint },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.coin, "mint", $event.target.value)
-              }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c("label", { staticClass: "form-label col-sm-3" }, [
-            _vm._v(" Year: ")
-          ]),
-          _vm._v(" "),
-          _c(
-            "p",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.coin.year && !_vm.editMode,
-                  expression: "coin.year && !editMode"
-                }
-              ],
-              staticClass: "col-sm-9"
-            },
-            [_vm._v("\n          " + _vm._s(_vm.coin.year) + "\n        ")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.editMode,
-                expression: "editMode"
-              },
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.coin.year,
-                expression: "coin.year"
-              }
-            ],
-            staticClass: "col-sm-9",
-            attrs: { type: "text", name: "coin-year" },
-            domProps: { value: _vm.coin.year },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.coin, "year", $event.target.value)
-              }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c("label", { staticClass: "form-label col-sm-3" }, [
-            _vm._v(" Origin: ")
-          ]),
-          _vm._v(" "),
-          _c(
-            "p",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.coin.type.name && !_vm.editMode,
-                  expression: "coin.type.name && !editMode"
-                }
-              ],
-              staticClass: "col-sm-9"
-            },
-            [_vm._v("\n          " + _vm._s(_vm.coin.type.name) + "\n        ")]
+            [_vm._v(" Edit ")]
           ),
           _vm._v(" "),
           _c(
-            "p",
+            "button",
             {
               directives: [
                 {
@@ -61542,96 +61611,103 @@ var render = function() {
                   value: _vm.editMode,
                   expression: "editMode"
                 }
-              ]
+              ],
+              staticClass: "btn btn-primary",
+              on: {
+                click: function($event) {
+                  return _vm.saveCoin()
+                }
+              }
             },
-            [_vm._v(" This field depends on the Coin Type ")]
+            [_vm._v(" Save ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.coin,
+                  expression: "coin"
+                }
+              ],
+              staticClass: "btn btn-danger",
+              attrs: { id: "deleteBtn" }
+            },
+            [_vm._v(" Delete ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "b-popover",
+            {
+              attrs: {
+                target: "deleteBtn",
+                triggers: "focus",
+                show: _vm.confirmDelete
+              },
+              on: {
+                "update:show": function($event) {
+                  _vm.confirmDelete = $event
+                }
+              }
+            },
+            [
+              _c("template", { slot: "title" }, [_vm._v(" Are you sure? ")]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-danger",
+                  on: {
+                    click: function($event) {
+                      return _vm.deleteCoin()
+                    }
+                  }
+                },
+                [_vm._v(" Delete Me! ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  on: {
+                    click: function($event) {
+                      _vm.confirmDelete = false
+                    }
+                  }
+                },
+                [_vm._v(" Panic! ")]
+              )
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.editMode,
+                  expression: "editMode"
+                }
+              ],
+              staticClass: "btn btn-secondary",
+              on: {
+                click: function($event) {
+                  _vm.editMode = false
+                }
+              }
+            },
+            [_vm._v(" Cancel ")]
           )
-        ]),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: !_vm.editMode,
-                expression: "!editMode"
-              }
-            ],
-            staticClass: "btn btn-secondary",
-            on: {
-              click: function($event) {
-                _vm.editMode = true
-              }
-            }
-          },
-          [_vm._v(" Edit ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.editMode,
-                expression: "editMode"
-              }
-            ],
-            staticClass: "btn btn-primary",
-            on: {
-              click: function($event) {
-                return _vm.saveCoin()
-              }
-            }
-          },
-          [_vm._v(" Save ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.coin,
-                expression: "coin"
-              }
-            ],
-            staticClass: "btn btn-danger",
-            on: {
-              click: function($event) {
-                return _vm.deleteCoin()
-              }
-            }
-          },
-          [_vm._v(" Delete ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.editMode,
-                expression: "editMode"
-              }
-            ],
-            staticClass: "btn btn-secondary",
-            on: {
-              click: function($event) {
-                _vm.editMode = false
-              }
-            }
-          },
-          [_vm._v(" Cancel ")]
-        )
-      ])
+        ],
+        1
+      )
     ])
   ])
 }
